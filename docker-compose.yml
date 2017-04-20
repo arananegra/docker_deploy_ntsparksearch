@@ -1,0 +1,50 @@
+version: '2'
+# docker-compose build --no-cache ntsparksearch
+# docker-compose build ntsparksearch
+# docker-compose up ntsparksearch
+# docker-compose down ntsparksearch
+
+services:
+  ntsparksearch:
+    build:
+      context: ./NtSparkSearch
+    image: nt_spark_search
+    extra_hosts:
+      - "database:172.16.239.11"
+    networks:
+      ci_co_net:
+        ipv4_address: 172.16.239.10
+    container_name: ntsparksearch
+    #link a otro contenedor llamado mongodb_ntsparksearch --> cuando este
+    # se levanta, se levanta el del mongo
+    links:
+      - mongodb_ntsparksearch:ntsparksearch
+    # volumen donde añadir ficheros a usar por programa: excel etc.
+    volumes:
+      - ./volumes/ncbi_files:/home/ncbi_files
+  
+  mongodb_ntsparksearch:
+    image: mongo
+    container_name: mongodb_ntsparksearch
+    networks:
+      ci_co_net:
+        ipv4_address: 172.16.239.11
+    mem_limit: 256m
+    ports:
+      - 8082:27017
+    volumes:
+      - ./volumes/mongodb_recovery:/data/db
+    restart: always
+
+# red interna de los contenedores
+# docker
+networks:
+  ci_co_net:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+      - subnet: 172.16.239.0/24
+        gateway: 172.16.239.2
+
+    

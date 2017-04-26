@@ -21,7 +21,7 @@ services:
       - mongodb_ntsparksearch:ntsparksearch
     # volumen donde añadir ficheros a usar por programa: excel etc.
     volumes:
-      - ./volumes/ncbi_files:/home/ncbi_files
+      - ./volumes/files:/home/files
   
   mongodb_ntsparksearch:
     image: mongo

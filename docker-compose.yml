@@ -8,17 +8,17 @@ services:
   ntsparksearch:
     build:
       context: ./NtSparkSearch
-    image: nt_spark_search
+    image: nt_spark_search_image
     extra_hosts:
       - "database:172.16.239.11"
     networks:
       ci_co_net:
         ipv4_address: 172.16.239.10
-    container_name: ntsparksearch
+    container_name: ntsparksearch_docker
     #link a otro contenedor llamado mongodb_ntsparksearch --> cuando este
     # se levanta, se levanta el del mongo
     links:
-      - mongodb_ntsparksearch:ntsparksearch
+      - mongodb_ntsparksearch:ntsparksearch_docker
     # volumen donde añadir ficheros a usar por programa: excel etc.
     volumes:
       - ./volumes/files:/home/files

@@ -21,7 +21,7 @@ services:
       - mongodb_ntsparksearch:ntsparksearch_docker
     # volumen donde añadir ficheros a usar por programa: excel etc.
     volumes:
-      - ./volumes/files:/home/files
+      - ./volumes/input_files:/home/files
   
   mongodb_ntsparksearch:
     image: mongo

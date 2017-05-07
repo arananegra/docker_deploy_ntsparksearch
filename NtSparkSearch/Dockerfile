@@ -2,7 +2,8 @@ FROM gettyimages/spark:2.1.0-hadoop-2.7
 
 RUN apt-get update && apt-get install -y \
     build-essential \
-    python3.4-dev
+    python3.4-dev \
+    redis-server
 
 #RUN cd /usr/spark-2.1.0 && git clone -b SetupCreation https://arananegrayeye@bitbucket.org/arananegrayeye/ntsparksearch.git
 

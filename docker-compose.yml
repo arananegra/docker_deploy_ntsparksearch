@@ -11,14 +11,18 @@ services:
     image: nt_spark_search_image
     extra_hosts:
       - "database:172.16.239.11"
+      - "redis:172.16.239.12"
     networks:
       ci_co_net:
         ipv4_address: 172.16.239.10
     container_name: ntsparksearch_docker
+    ports:
+      - 5000:5000
     #link a otro contenedor llamado mongodb_ntsparksearch --> cuando este
     # se levanta, se levanta el del mongo
     links:
       - mongodb_ntsparksearch:ntsparksearch_docker
+      #- redis_ntsparksearch:ntsparksearch_docker
     # volumen donde añadir ficheros a usar por programa: excel etc.
     volumes:
       - ./volumes/input_files:/usr/spark-2.1.0/input
@@ -36,6 +40,16 @@ services:
     volumes:
       - ./volumes/mongodb_recovery:/data/db
     restart: always
+
+#  redis_ntsparksearch:
+#    image: redis
+#    container_name: redis_ntsparksearch
+#    networks:
+#      ci_co_net:
+#        ipv4_address: 172.16.239.12
+#    ports:
+#      - 6379:6379
+#    restart: always
 
 # red interna de los contenedores
 # docker

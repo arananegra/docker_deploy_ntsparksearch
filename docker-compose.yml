@@ -29,7 +29,7 @@ services:
     volumes:
       - ./volumes/input_files:/usr/spark-2.1.0/input
       - ./volumes/output_files:/usr/spark-2.1.0/output
-    #command: python3.4 /usr/spark-2.1.0/ntsparksearch/ntsparksearch/RestApi/ServiceRunner.py
+    command: python3.4 /usr/spark-2.1.0/ntsparksearch/ntsparksearch/RestApi/ServiceRunner.py
   
   mongodb_ntsparksearch:
     image: mongo

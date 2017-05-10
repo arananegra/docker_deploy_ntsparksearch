@@ -5,6 +5,7 @@ RUN apt-get update && apt-get install -y \
     python3.4-dev \
     redis-server
 
+RUN redis-server --daemonize yes
 #RUN cd /usr/spark-2.1.0 && git clone -b SetupCreation https://arananegrayeye@bitbucket.org/arananegrayeye/ntsparksearch.git
 
 COPY ./source_code/. /usr/spark-2.1.0/

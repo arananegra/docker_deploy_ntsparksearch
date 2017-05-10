@@ -11,7 +11,7 @@ services:
     image: nt_spark_search_image
     extra_hosts:
       - "database:172.16.239.11"
-      - "redis:172.16.239.12"
+      #- "redis:172.16.239.12"
     networks:
       ci_co_net:
         ipv4_address: 172.16.239.10
@@ -42,7 +42,9 @@ services:
     restart: always
 
 #  redis_ntsparksearch:
-#    image: redis
+#    build:
+#      context: ./redis_custom_image
+#    image: redis_custom_image
 #    container_name: redis_ntsparksearch
 #    networks:
 #      ci_co_net:

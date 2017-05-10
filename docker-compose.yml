@@ -6,12 +6,13 @@ version: '2'
 
 services:
   ntsparksearch:
+    restart: always
     build:
       context: ./NtSparkSearch
     image: nt_spark_search_image
     extra_hosts:
       - "database:172.16.239.11"
-      #- "redis:172.16.239.12"
+      - "redis-server:172.16.239.12"
     networks:
       ci_co_net:
         ipv4_address: 172.16.239.10
@@ -22,11 +23,13 @@ services:
     # se levanta, se levanta el del mongo
     links:
       - mongodb_ntsparksearch:ntsparksearch_docker
-      #- redis_ntsparksearch:ntsparksearch_docker
+      - redis:ntsparksearch_docker
+      - worker-rq:ntsparksearch_docker
     # volumen donde añadir ficheros a usar por programa: excel etc.
     volumes:
       - ./volumes/input_files:/usr/spark-2.1.0/input
       - ./volumes/output_files:/usr/spark-2.1.0/output
+    #command: python3.4 /usr/spark-2.1.0/ntsparksearch/ntsparksearch/RestApi/ServiceRunner.py
   
   mongodb_ntsparksearch:
     image: mongo
@@ -41,17 +44,32 @@ services:
       - ./volumes/mongodb_recovery:/data/db
     restart: always
 
-#  redis_ntsparksearch:
-#    build:
-#      context: ./redis_custom_image
-#    image: redis_custom_image
-#    container_name: redis_ntsparksearch
-#    networks:
-#      ci_co_net:
-#        ipv4_address: 172.16.239.12
-#    ports:
-#      - 6379:6379
-#    restart: always
+  worker-rq:
+    image: nt_spark_search_image
+    networks:
+      ci_co_net:
+        ipv4_address: 172.16.239.13
+    extra_hosts:
+      - "database:172.16.239.11"
+      - "redis-server:172.16.239.12"
+    container_name: ntsparksearch_docker_worker-rq
+    command: python3.4 /usr/spark-2.1.0/ntsparksearch/ntsparksearch/RestApi/worker.py 
+    links:
+      - redis:ntsparksearch_docker_worker-rq
+    depends_on:
+    - redis
+
+  redis:
+    image: redis
+    command: redis-server
+    networks:
+      ci_co_net:
+        ipv4_address: 172.16.239.12
+    ports:
+      - 6379:6379
+    container_name: redis_ntsparksearch
+    restart: always
+
 
 # red interna de los contenedores
 # docker

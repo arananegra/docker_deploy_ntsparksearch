@@ -1,8 +1,4 @@
 version: '2'
-# docker-compose build --no-cache ntsparksearch
-# docker-compose build ntsparksearch
-# docker-compose up ntsparksearch
-# docker-compose down ntsparksearch
 
 services:
   ntsparksearch:
@@ -19,8 +15,6 @@ services:
     container_name: ntsparksearch_docker
     ports:
       - 5000:5000
-    #link a otro contenedor llamado mongodb_ntsparksearch --> cuando este
-    # se levanta, se levanta el del mongo
     links:
       - mongodb_ntsparksearch:ntsparksearch_docker
       - redis:ntsparksearch_docker
@@ -29,7 +23,7 @@ services:
     volumes:
       - ./volumes/input_files:/usr/spark-2.1.0/input
       - ./volumes/output_files:/usr/spark-2.1.0/output
-    command: python3.4 /usr/spark-2.1.0/ntsparksearch/ntsparksearch/RestApi/ServiceRunner.py
+    command: python3.4 /usr/spark-2.1.0/ntsparksearch_backend/ntsparksearch/RestApi/ServiceRunner.py
   
   mongodb_ntsparksearch:
     image: mongo
@@ -53,7 +47,7 @@ services:
       - "database:172.16.239.11"
       - "redis-server:172.16.239.12"
     container_name: ntsparksearch_docker_worker-rq
-    command: python3.4 /usr/spark-2.1.0/ntsparksearch/ntsparksearch/RestApi/worker.py 
+    command: python3.4 /usr/spark-2.1.0/ntsparksearch_backend/ntsparksearch/RestApi/worker.py 
     links:
       - redis:ntsparksearch_docker_worker-rq
     depends_on:
@@ -70,9 +64,6 @@ services:
     container_name: redis_ntsparksearch
     restart: always
 
-
-# red interna de los contenedores
-# docker
 networks:
   ci_co_net:
     driver: bridge

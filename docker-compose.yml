@@ -43,7 +43,7 @@ services:
       - ./data:/tmp/data
       - ./volumes/input_files:/usr/spark-2.1.0/input
       - ./volumes/output_files:/usr/spark-2.1.0/output
-    command: /usr/spark-2.1.0/launch_spark_and_service_2.sh
+    command: /usr/spark-2.1.0/launch_spark_and_service.sh
     #command: bin/spark-class org.apache.spark.deploy.master.Master -h master
 
   worker:

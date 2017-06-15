@@ -5,7 +5,7 @@ RUN apt-get update && apt-get install -y \
     python3.4-dev
 
 COPY ./source_code/. /usr/spark-2.1.0/
-COPY ./launch_spark_and_service_2.sh /usr/spark-2.1.0/
+COPY ./launch_spark_and_service.sh /usr/spark-2.1.0/
 
 RUN cd /usr/spark-2.1.0/ && chmod +x launch_spark_and_service.sh
 

@@ -44,6 +44,3 @@
 # - SPARK_IDENT_STRING  A string representing this instance of spark. (Default: $USER)
 # - SPARK_NICENESS      The scheduling priority for daemons. (Default: 0)
 # - SPARK_NO_DAEMONIZE  Run the proposed command in the foreground. It will not output a PID file.
-export SPARK_WORKER_CORES=8
-export SPARK_DAEMON_MEMORY=4g
-export SPARK_WORKER_MEMORY=4g

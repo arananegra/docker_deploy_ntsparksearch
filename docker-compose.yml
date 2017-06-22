@@ -11,8 +11,6 @@ services:
       MASTER: spark://master:7077
       SPARK_CONF_DIR: /usr/spark-2.1.0/conf
       SPARK_PUBLIC_DNS: localhost
-      SPARK_WORKER_CORES: 8
-      SPARK_DAEMON_MEMORY: 4g
     extra_hosts:
       - "database:172.16.239.11"
       - "redis-server:172.16.239.12"
@@ -42,12 +40,10 @@ services:
     # volumen donde añadir ficheros a usar por programa: excel etc.
     volumes:
       - ./conf/master:/usr/spark-2.1.0/conf/
-      #- ./conf/master:/conf
       - ./data:/tmp/data
       - ./volumes/input_files:/usr/spark-2.1.0/input
       - ./volumes/output_files:/usr/spark-2.1.0/output
     command: /usr/spark-2.1.0/launch_spark_and_service.sh
-    #command: bin/spark-class org.apache.spark.deploy.master.Master -h master
 
   worker:
     image: nt_spark_search_image
@@ -61,13 +57,9 @@ services:
         ipv4_address: 172.16.239.14
     environment:
       SPARK_CONF_DIR: /usr/spark-2.1.0/conf
-      SPARK_WORKER_CORES: 2
-      SPARK_WORKER_MEMORY: 1g
       SPARK_WORKER_PORT: 8881
       SPARK_WORKER_WEBUI_PORT: 8081
       SPARK_PUBLIC_DNS: localhost
-      SPARK_WORKER_CORES: 8
-      SPARK_DAEMON_MEMORY: 4g
     links:
       - ntsparksearch
     expose:

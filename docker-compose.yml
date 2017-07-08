@@ -2,10 +2,8 @@ version: '2'
 
 services:
   ntsparksearch:
+    image: arananegra/ntsparksearch:1.0.0nc
     restart: always
-    build:
-      context: ./NtSparkSearch
-    image: nt_spark_search_image
     extra_hosts:
       - "database:172.16.239.11"
       - "redis-server:172.16.239.12"
@@ -39,7 +37,7 @@ services:
     restart: always
 
   worker-rq:
-    image: nt_spark_search_image
+    image: arananegra/ntsparksearch:1.0.0nc
     networks:
       ci_co_net:
         ipv4_address: 172.16.239.13

@@ -17,7 +17,7 @@ services:
       - mongodb_ntsparksearch:ntsparksearch_docker
       - redis:ntsparksearch_docker
       - worker-rq:ntsparksearch_docker
-    # volumen donde añadir ficheros a usar por programa: excel etc.
+      - ntsparksearch_frontend:ntsparksearch_docker
     volumes:
       - ./volumes/input_files:/usr/spark-2.1.0/input
       - ./volumes/output_files:/usr/spark-2.1.0/output
@@ -61,6 +61,16 @@ services:
       - 6379:6379
     container_name: redis_ntsparksearch
     restart: always
+  
+  ntsparksearch_frontend:
+    image: arananegra/ntsparksearch_frontend:1.0.0
+    restart: always
+    networks:
+      ci_co_net:
+        ipv4_address: 172.16.239.14
+    ports:
+      - 1313:8080
+    container_name: ntsparksearch_frontend_docker
 
 networks:
   ci_co_net:

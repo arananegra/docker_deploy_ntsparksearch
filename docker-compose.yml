@@ -37,7 +37,6 @@ services:
       - mongodb_ntsparksearch:ntsparksearch_docker_master
       - redis:ntsparksearch_docker_master
       - worker-rq:ntsparksearch_docker_master
-    # volumen donde añadir ficheros a usar por programa: excel etc.
     volumes:
       - ./conf/master:/usr/spark-2.1.0/conf/
       - ./data:/tmp/data
@@ -73,11 +72,10 @@ services:
       - 8081:8081
     volumes:
       - ./conf/worker:/usr/spark-2.1.0/conf
-      #- ./conf/worker:/conf
       - ./data:/tmp/data
   
   mongodb_ntsparksearch:
-    image: mongo
+    image: mongo:3.4.6
     container_name: mongodb_ntsparksearch
     networks:
       ci_co_net:
@@ -105,7 +103,7 @@ services:
     - redis
 
   redis:
-    image: redis
+    image: redis:3.2.8
     command: redis-server
     networks:
       ci_co_net:

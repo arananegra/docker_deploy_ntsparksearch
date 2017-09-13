@@ -62,13 +62,13 @@ services:
       SPARK_PUBLIC_DNS: localhost
     links:
       - ntsparksearch
-    # expose:
-    #   - 7012
-    #   - 7013
-    #   - 7014
-    #   - 7015
-    #   - 7016
-    #   - 8881
+    expose:
+      - 7012
+      - 7013
+      - 7014
+      - 7015
+      - 7016
+      - 8881
     ports:
       - 8081:8081
     volumes:

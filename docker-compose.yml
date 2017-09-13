@@ -37,6 +37,7 @@ services:
       - mongodb_ntsparksearch:ntsparksearch_docker_master
       - redis:ntsparksearch_docker_master
       - worker-rq:ntsparksearch_docker_master
+      - ntsparksearch_frontend:ntsparksearch_docker_master
     volumes:
       - ./conf/master:/usr/spark-2.1.0/conf/
       - ./data:/tmp/data
@@ -61,13 +62,13 @@ services:
       SPARK_PUBLIC_DNS: localhost
     links:
       - ntsparksearch
-    expose:
-      - 7012
-      - 7013
-      - 7014
-      - 7015
-      - 7016
-      - 8881
+    # expose:
+    #   - 7012
+    #   - 7013
+    #   - 7014
+    #   - 7015
+    #   - 7016
+    #   - 8881
     ports:
       - 8081:8081
     volumes:
@@ -112,6 +113,18 @@ services:
       - 6379:6379
     container_name: redis_ntsparksearch
     restart: always
+
+  ntsparksearch_frontend:
+    image: arananegra/ntsparksearch_frontend
+    build:
+      context: ./frontend_server
+    restart: always
+    networks:
+      ci_co_net:
+        ipv4_address: 172.16.239.15
+    ports:
+      - 1313:8080
+    container_name: ntsparksearch_frontend_docker
 
 networks:
   ci_co_net:

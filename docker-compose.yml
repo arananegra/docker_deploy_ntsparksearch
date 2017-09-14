@@ -32,7 +32,7 @@ services:
       - 6066:6066
       - 7077:7077
       - 8080:8080
-      - 5000:5000
+      #- 5000:5000
     links:
       - mongodb_ntsparksearch:ntsparksearch_docker_master
       - redis:ntsparksearch_docker_master
@@ -43,7 +43,7 @@ services:
       - ./data:/tmp/data
       - ./volumes/input_files:/usr/spark-2.1.0/input
       - ./volumes/output_files:/usr/spark-2.1.0/output
-    command: /usr/spark-2.1.0/launch_spark_and_service.sh
+    command: bin/spark-class org.apache.spark.deploy.master.Master -h master
 
   worker:
     image: nt_spark_search_image

@@ -13,4 +13,8 @@ RUN cd /usr/spark-2.2.0/ntsparksearch_backend && pip3.4 install -r requirements.
 
 ENV PATH /usr/spark-2.2.0/ntsparksearch_backend/ntsparksearch/RestApi:$PATH
 
+ENV SECRET_KEY alv_nt_spark_search_is_the_best
+
+ENV SECURITY_PASSWORD_SALT wjfiwjfiwamcw3214awcq932
+
 WORKDIR /usr/spark-2.2.0

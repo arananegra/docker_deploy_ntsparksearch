@@ -38,6 +38,10 @@ services:
       - redis:ntsparksearch_docker_master
       - worker-rq:ntsparksearch_docker_master
       - ntsparksearch_frontend:ntsparksearch_docker_master
+      - worker_1:ntsparksearch_docker_master
+      - worker_2:ntsparksearch_docker_master
+      - worker_3:ntsparksearch_docker_master
+      - worker_4:ntsparksearch_docker_master
     volumes:
       - ./conf/master:/usr/spark-2.2.0/conf/
       - ./data:/tmp/data
@@ -45,13 +49,13 @@ services:
       - ./volumes/output_files:/usr/spark-2.2.0/output
     command: /usr/spark-2.2.0/launch_spark_and_service.sh
     
-  worker:
+  worker_1:
     image: nt_spark_search_image
-    container_name: ntsparksearch_docker_worker
+    container_name: ntsparksearch_docker_worker_1
     command: bin/spark-class org.apache.spark.deploy.worker.Worker spark://master:7077
     extra_hosts:
       - "master:172.16.239.10"
-    hostname: worker
+    hostname: worker_1
     networks:
       ci_co_net:
         ipv4_address: 172.16.239.14
@@ -60,8 +64,8 @@ services:
       SPARK_WORKER_PORT: 8881
       SPARK_WORKER_WEBUI_PORT: 8081
       SPARK_PUBLIC_DNS: localhost
-    links:
-      - ntsparksearch
+    # links:
+    #   - ntsparksearch
     expose:
       - 7012
       - 7013
@@ -72,7 +76,97 @@ services:
     ports:
       - 8081:8081
     volumes:
-      - ./conf/worker:/usr/spark-2.2.0/conf
+      - ./conf/worker_1:/usr/spark-2.2.0/conf
+      - ./data:/tmp/data
+
+  worker_2:
+    image: nt_spark_search_image
+    container_name: ntsparksearch_docker_worker_2
+    command: bin/spark-class org.apache.spark.deploy.worker.Worker spark://master:7077
+    extra_hosts:
+      - "master:172.16.239.10"
+    hostname: worker_2
+    networks:
+      ci_co_net:
+        ipv4_address: 172.16.239.16
+    environment:
+      SPARK_CONF_DIR: /usr/spark-2.2.0/conf
+      SPARK_WORKER_PORT: 8882
+      SPARK_WORKER_WEBUI_PORT: 8082
+      SPARK_PUBLIC_DNS: localhost
+    # links:
+    #   - ntsparksearch
+    expose:
+      - 7022
+      - 7023
+      - 7024
+      - 7025
+      - 7026
+      - 8882
+    ports:
+      - 8082:8082
+    volumes:
+      - ./conf/worker_2:/usr/spark-2.2.0/conf
+      - ./data:/tmp/data
+
+  worker_3:
+    image: nt_spark_search_image
+    container_name: ntsparksearch_docker_worker_3
+    command: bin/spark-class org.apache.spark.deploy.worker.Worker spark://master:7077
+    extra_hosts:
+      - "master:172.16.239.10"
+    hostname: worker_3
+    networks:
+      ci_co_net:
+        ipv4_address: 172.16.239.17
+    environment:
+      SPARK_CONF_DIR: /usr/spark-2.2.0/conf
+      SPARK_WORKER_PORT: 8883
+      SPARK_WORKER_WEBUI_PORT: 8083
+      SPARK_PUBLIC_DNS: localhost
+    # links:
+    #   - ntsparksearch
+    expose:
+      - 7032
+      - 7033
+      - 7034
+      - 7035
+      - 7036
+      - 8883
+    ports:
+      - 8083:8083
+    volumes:
+      - ./conf/worker_3:/usr/spark-2.2.0/conf
+      - ./data:/tmp/data
+  
+  worker_4:
+    image: nt_spark_search_image
+    container_name: ntsparksearch_docker_worker_4
+    command: bin/spark-class org.apache.spark.deploy.worker.Worker spark://master:7077
+    extra_hosts:
+      - "master:172.16.239.10"
+    hostname: worker_4
+    networks:
+      ci_co_net:
+        ipv4_address: 172.16.239.18
+    environment:
+      SPARK_CONF_DIR: /usr/spark-2.2.0/conf
+      SPARK_WORKER_PORT: 8884
+      SPARK_WORKER_WEBUI_PORT: 8084
+      SPARK_PUBLIC_DNS: localhost
+    # links:
+    #   - ntsparksearch
+    expose:
+      - 7042
+      - 7043
+      - 7044
+      - 7045
+      - 7046
+      - 8884
+    ports:
+      - 8084:8084
+    volumes:
+      - ./conf/worker_4:/usr/spark-2.2.0/conf
       - ./data:/tmp/data
   
   mongodb_ntsparksearch:
@@ -83,7 +177,7 @@ services:
         ipv4_address: 172.16.239.11
     mem_limit: 256m
     ports:
-      - 8082:27017
+      - 27018:27017
     volumes:
       - ./volumes/mongodb_recovery:/data/db
     restart: always
@@ -115,7 +209,7 @@ services:
     restart: always
 
   ntsparksearch_frontend:
-    image: arananegra/ntsparksearch_frontend
+    image: ntsparksearch_frontend
     build:
       context: ./frontend_server
     restart: always

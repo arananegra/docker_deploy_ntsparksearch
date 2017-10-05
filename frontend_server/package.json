@@ -1,0 +1,13 @@
+{
+  "name": "ntsparksearch_frontend",
+  "version": "1.0.0",
+  "description": "FDP",
+  "author": "Álvaro Gómez",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.15.3"
+  }
+}
